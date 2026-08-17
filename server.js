@@ -34,6 +34,18 @@ async function readDB() {
           db.parties = db.parties || [];
           db.predictions = db.predictions || {};
           return db;
+        } else {
+          console.log("Upstash database empty, seeding from local db.json...");
+          const localData = await fs.readFile(DB_FILE, 'utf8');
+          const db = JSON.parse(localData);
+          db.teams = db.teams || [];
+          db.games = db.games || [];
+          db.users = db.users || [];
+          db.parties = db.parties || [];
+          db.predictions = db.predictions || {};
+          // Seed the database to Upstash so it's populated on subsequent runs
+          await writeDB(db);
+          return db;
         }
       } else {
         console.error(`Upstash GET failed: ${res.status} ${res.statusText}`);
