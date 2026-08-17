@@ -1,0 +1,18 @@
+{
+  "name": "Gridiron Predictor",
+  "short_name": "Gridiron",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0d14",
+  "theme_color": "#0a0d14",
+  "orientation": "portrait",
+  "description": "College football prediction engine for SEC and select national teams.",
+  "icons": [
+    {
+      "src": "/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
