@@ -527,8 +527,7 @@ export default function App() {
     return (
       <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', background: '#0a0d14' }}>
         <div style={{ textAlign: 'center' }}>
-          <img src="/app-icon.png" alt="CFB Predictions Logo" style={{ height: '64px', width: '64px', objectFit: 'contain', marginBottom: '16px' }} />
-          <h2 style={{ fontFamily: 'Space Grotesk', color: '#818cf8', marginBottom: '10px' }}>CFB Predictions</h2>
+          <h2 style={{ fontFamily: 'Space Grotesk', color: '#818cf8', marginBottom: '10px' }}>🏈 Gridiron Predictor</h2>
           <p style={{ color: '#94a3b8' }}>Loading schedules and predictions...</p>
         </div>
       </div>
@@ -540,8 +539,8 @@ export default function App() {
     return (
       <div className="setup-overlay">
         <div className="setup-card">
-          <img src="/app-icon.png" alt="CFB Predictions Logo" style={{ height: '80px', width: '80px', objectFit: 'contain', marginBottom: '15px' }} />
-          <h2>CFB Predictions</h2>
+          <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🏈</div>
+          <h2>Gridiron Predictor</h2>
           <p>Create a global profile or log in to access your prediction parties on any device.</p>
           
           <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: '20px' }}>
@@ -631,7 +630,7 @@ export default function App() {
     return (
       <div className="setup-overlay">
         <div className="setup-card">
-          <img src="/app-icon.png" alt="CFB Predictions Logo" style={{ height: '80px', width: '80px', objectFit: 'contain', marginBottom: '15px' }} />
+          <div style={{ fontSize: '3rem', marginBottom: '15px' }}>🎉</div>
           <h2>Join or Create a Prediction Party</h2>
           <p>Hi, <strong>{currentUser.name}</strong>! Choose an action below to start predicting college football games.</p>
           
@@ -751,10 +750,10 @@ export default function App() {
     <div className="app-container">
       {/* App Header */}
       <header className="header">
-        <div className="logo-section" style={{ gap: '8px', alignItems: 'center' }}>
-          <img src="/app-icon.png" alt="CFB Predictions Logo" style={{ height: '28px', width: '28px', objectFit: 'contain' }} />
+        <div className="logo-section" style={{ gap: '8px' }}>
+          <span className="logo-icon" style={{ fontSize: '1.2rem' }}>🏈</span>
           <div>
-            <h1 style={{ fontSize: '1.0rem', margin: 0 }}>CFB Predictions</h1>
+            <h1 style={{ fontSize: '1.1rem', margin: 0 }}>Gridiron</h1>
             {(currentUser.parties || []).length > 1 ? (
               <select
                 value={activePartyCode}
