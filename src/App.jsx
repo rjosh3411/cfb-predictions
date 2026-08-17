@@ -1282,22 +1282,42 @@ export default function App() {
                             <div>
                               <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>You Predict:</div>
                               {userPick ? (
-                                <div className={`comp-pred-indicator ${userPick === g.home ? 'win' : 'loss'}`}>
-                                  {userPick === g.home ? `W (${homeName})` : `L (${homeName})`}
+                                <div className="comp-pred-indicator win" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 10px', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: '8px', color: '#22c55e', fontSize: '0.85rem', fontWeight: '600' }}>
+                                  {userPick === g.home ? (
+                                    <>
+                                      {(g.homeLogo || homeTeam?.logoUrl) && <img src={g.homeLogo || homeTeam.logoUrl} alt={homeName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
+                                      <span>{homeName}</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      {(g.awayLogo || awayTeam?.logoUrl) && <img src={g.awayLogo || awayTeam.logoUrl} alt={awayName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
+                                      <span>{awayName}</span>
+                                    </>
+                                  )}
                                 </div>
                               ) : (
-                                <div className="comp-pred-indicator none">No Pick</div>
+                                <div className="comp-pred-indicator none" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px 10px', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '8px', color: '#64748b', fontSize: '0.85rem' }}>No Pick</div>
                               )}
                             </div>
                             
                             <div>
                               <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '4px' }}>{buddyObj?.name || 'Buddy'} Predicts:</div>
                               {buddyPick ? (
-                                <div className={`comp-pred-indicator ${buddyPick === g.home ? 'win' : 'loss'}`}>
-                                  {buddyPick === g.home ? `W (${homeName})` : `L (${homeName})`}
+                                <div className="comp-pred-indicator win" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 10px', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: '8px', color: '#22c55e', fontSize: '0.85rem', fontWeight: '600' }}>
+                                  {buddyPick === g.home ? (
+                                    <>
+                                      {(g.homeLogo || homeTeam?.logoUrl) && <img src={g.homeLogo || homeTeam.logoUrl} alt={homeName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
+                                      <span>{homeName}</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      {(g.awayLogo || awayTeam?.logoUrl) && <img src={g.awayLogo || awayTeam.logoUrl} alt={awayName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
+                                      <span>{awayName}</span>
+                                    </>
+                                  )}
                                 </div>
                               ) : (
-                                <div className="comp-pred-indicator none">No Pick</div>
+                                <div className="comp-pred-indicator none" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px 10px', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '8px', color: '#64748b', fontSize: '0.85rem' }}>No Pick</div>
                               )}
                             </div>
                           </div>
