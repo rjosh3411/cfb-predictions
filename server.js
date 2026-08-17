@@ -14,35 +14,79 @@ app.use(cors());
 app.use(express.json());
 
 const DB_FILE = process.env.DATABASE_PATH || path.join(__dirname, 'db.json');
+const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
 // Helper to read DB
 async function readDB() {
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      const res = await fetch(`${UPSTASH_URL}/get/cfb_database_json`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+      });
+      if (res.ok) {
+        const payload = await res.json();
+        if (payload.result) {
+          const db = JSON.parse(payload.result);
+          db.teams = db.teams || [];
+          db.games = db.games || [];
+          db.users = db.users || [];
+          db.parties = db.parties || [];
+          db.predictions = db.predictions || {};
+          return db;
+        }
+      } else {
+        console.error(`Upstash GET failed: ${res.status} ${res.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error reading from Upstash Redis:", error);
+    }
+  }
+
+  // Fallback to local file
   try {
     const data = await fs.readFile(DB_FILE, 'utf8');
     const db = JSON.parse(data);
-    
-    // Ensure lists exist
     db.teams = db.teams || [];
     db.games = db.games || [];
     db.users = db.users || [];
     db.parties = db.parties || [];
     db.predictions = db.predictions || {};
-    
     return db;
   } catch (error) {
-    console.error("Error reading db.json:", error);
+    console.error("Error reading local db.json:", error);
     return { teams: [], games: [], users: [], parties: [], predictions: {} };
   }
 }
 
 // Helper to write DB
 async function writeDB(data) {
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      const res = await fetch(`${UPSTASH_URL}/set/cfb_database_json`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${UPSTASH_TOKEN}`
+        },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        return;
+      } else {
+        console.error(`Upstash SET failed: ${res.status} ${res.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error writing to Upstash Redis:", error);
+    }
+  }
+
+  // Fallback to local file
   try {
     const dir = path.dirname(DB_FILE);
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
   } catch (error) {
-    console.error("Error writing db.json:", error);
+    console.error("Error writing local db.json:", error);
     throw error;
   }
 }
