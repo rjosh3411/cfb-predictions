@@ -776,17 +776,14 @@ export default function App() {
               <select
                 value={activePartyCode}
                 onChange={(e) => switchActiveParty(e.target.value)}
+                className="modern-select"
                 style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '6px',
-                  color: '#818cf8',
                   fontSize: '0.7rem',
                   fontWeight: '700',
-                  padding: '2px 4px',
-                  outline: 'none',
-                  cursor: 'pointer',
-                  letterSpacing: '0.5px'
+                  padding: '4px 24px 4px 8px',
+                  width: 'auto',
+                  backgroundPosition: 'right 6px center',
+                  backgroundSize: '10px'
                 }}
               >
                 {(currentUser.parties || []).map(code => (
