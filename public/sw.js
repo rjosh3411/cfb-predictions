@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gridiron-predictor-v1';
+const CACHE_NAME = 'gridiron-predictor-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -34,12 +34,22 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   
+  // Use Network-First strategy to ensure updates are loaded instantly, falling back to cache if offline
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    }).catch(() => {
-      // Fallback path
-      return caches.match('/index.html');
-    })
+    fetch(event.request)
+      .then((response) => {
+        if (response && response.status === 200 && response.type === 'basic') {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((response) => {
+          return response || caches.match('/index.html');
+        });
+      })
   );
 });
