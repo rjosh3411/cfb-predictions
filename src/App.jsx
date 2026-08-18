@@ -38,6 +38,8 @@ export default function App() {
   });
   const [showFocusConfig, setShowFocusConfig] = useState(false);
   const [standingsConfFilter, setStandingsConfFilter] = useState('ALL');
+  const [compareConfFilter, setCompareConfFilter] = useState('ALL');
+  const [adminConfFilter, setAdminConfFilter] = useState('ALL');
 
   // Initial load
   useEffect(() => {
@@ -405,6 +407,21 @@ export default function App() {
       alert('Failed to delete party due to a connection error.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRefreshPredictions = async () => {
+    if (!activePartyCode) return;
+    setSyncing(true);
+    try {
+      const predsRes = await fetch(`${API_BASE}/predictions?partyCode=${activePartyCode}`);
+      if (predsRes.ok) {
+        setPredictions(await predsRes.json());
+      }
+    } catch (err) {
+      console.error("Error refreshing predictions:", err);
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -1189,26 +1206,28 @@ export default function App() {
             ) : (
               <div>
                 <div className="comp-controls">
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Compare With</label>
-                    <select 
-                      value={buddyId} 
-                      onChange={(e) => setBuddyId(e.target.value)}
-                      style={{
-                        background: '#161c2d',
-                        color: 'white',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        padding: '10px',
-                        borderRadius: '10px',
-                        outline: 'none',
-                        width: '100%',
-                        fontSize: '0.9rem'
-                      }}
+                  <div style={{ flex: 1, display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Compare With</label>
+                      <select 
+                        value={buddyId} 
+                        onChange={(e) => setBuddyId(e.target.value)}
+                        className="modern-select"
+                      >
+                        {users.filter(u => u.id !== currentUser.id).map(u => (
+                          <option key={u.id} value={u.id}>👤 {u.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <button
+                      onClick={handleRefreshPredictions}
+                      className="comp-filter-btn"
+                      disabled={syncing}
+                      style={{ padding: '8px 12px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', whiteSpace: 'nowrap' }}
+                      title="Sync predictions with buddy"
                     >
-                      {users.filter(u => u.id !== currentUser.id).map(u => (
-                        <option key={u.id} value={u.id}>👤 {u.name}</option>
-                      ))}
-                    </select>
+                      {syncing ? '🔄 Syncing...' : '🔃 Refresh'}
+                    </button>
                   </div>
                   
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'flex-end' }}>
@@ -1235,18 +1254,47 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Conference selection pills */}
+                <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '16px', width: '100%' }} className="custom-scrollbar">
+                  <button
+                    className={`comp-filter-btn ${compareConfFilter === 'ALL' ? 'active' : ''}`}
+                    onClick={() => setCompareConfFilter('ALL')}
+                  >
+                    All Focus
+                  </button>
+                  {focusedConferences.map(conf => (
+                    <button
+                      key={conf}
+                      className={`comp-filter-btn ${compareConfFilter === conf ? 'active' : ''}`}
+                      onClick={() => setCompareConfFilter(conf)}
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {conf === 'Ind.' ? 'Independents' : conf}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="matchups-container">
                   {games
                     .filter(g => {
                       const userPick = userPreds[g.id];
                       const buddyPick = predictions[buddyId]?.[g.id];
+                      
+                      const homeTeam = teams.find(t => t.id === g.home);
+                      const awayTeam = teams.find(t => t.id === g.away);
+                      const isHomeConf = homeTeam?.conference === compareConfFilter;
+                      const isAwayConf = awayTeam?.conference === compareConfFilter;
+                      const belongsToConf = compareConfFilter === 'ALL' || isHomeConf || isAwayConf;
+                      if (!belongsToConf) return false;
+
                       if (compFilter === 'agreements') {
                         return userPick && buddyPick && userPick === buddyPick;
                       }
                       if (compFilter === 'disagreements') {
                         return userPick && buddyPick && userPick !== buddyPick;
                       }
-                      return true; // all
+                      // For 'all', only return games where at least one user has made a prediction
+                      return userPick || buddyPick;
                     })
                     .map(g => {
                       const homeTeam = teams.find(t => t.id === g.home);
@@ -1454,8 +1502,36 @@ export default function App() {
               Synchronize scores directly from the ESPN scoreboard API, or set winners manually using the controls below as a backup.
             </p>
 
+            {/* Conference selection pills */}
+            <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '16px', width: '100%' }} className="custom-scrollbar">
+              <button
+                className={`comp-filter-btn ${adminConfFilter === 'ALL' ? 'active' : ''}`}
+                onClick={() => setAdminConfFilter('ALL')}
+              >
+                All Focus
+              </button>
+              {focusedConferences.map(conf => (
+                <button
+                  key={conf}
+                  className={`comp-filter-btn ${adminConfFilter === conf ? 'active' : ''}`}
+                  onClick={() => setAdminConfFilter(conf)}
+                  style={{ whiteSpace: 'nowrap' }}
+                >
+                  {conf === 'Ind.' ? 'Independents' : conf}
+                </button>
+              ))}
+            </div>
+
             <div className="matchups-container">
-              {games.map(g => {
+              {games
+                .filter(g => {
+                  const homeTeam = teams.find(t => t.id === g.home);
+                  const awayTeam = teams.find(t => t.id === g.away);
+                  const isHomeConf = homeTeam?.conference === adminConfFilter;
+                  const isAwayConf = awayTeam?.conference === adminConfFilter;
+                  return adminConfFilter === 'ALL' || isHomeConf || isAwayConf;
+                })
+                .map(g => {
                 const homeTeam = teams.find(t => t.id === g.home);
                 const awayTeam = teams.find(t => t.id === g.away);
                 const homeName = homeTeam?.name || g.home;

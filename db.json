@@ -466,7 +466,7 @@
       "id": "OKST",
       "name": "Oklahoma State",
       "nickname": "Cowboys",
-      "emoji": "🌰",
+      "emoji": "🤠",
       "espnId": "197",
       "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/197.png",
       "colors": {
@@ -474,7 +474,7 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big 12"
     },
     {
       "id": "ORE",
@@ -1922,7 +1922,7 @@
       "id": "OSU",
       "name": "Ohio State",
       "nickname": "Buckeyes",
-      "emoji": "🏈",
+      "emoji": "🌰",
       "espnId": "194",
       "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/194.png",
       "colors": {
@@ -1930,7 +1930,7 @@
         "secondary": "#a8adb4",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Big Ten"
     },
     {
       "id": "ODU",
@@ -2897,6 +2897,132 @@
         "text": "#FFFFFF"
       },
       "conference": "SEC"
+    },
+    {
+      "id": "IOWA",
+      "name": "Iowa",
+      "nickname": "Hawkeyes",
+      "emoji": "🐤",
+      "espnId": "2294",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2294.png",
+      "colors": {
+        "primary": "#000000",
+        "secondary": "#ffe100",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big Ten"
+    },
+    {
+      "id": "ILL",
+      "name": "Illinois",
+      "nickname": "Fighting Illini",
+      "emoji": "🏈",
+      "espnId": "356",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/356.png",
+      "colors": {
+        "primary": "#13294b",
+        "secondary": "#f54a00",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big Ten"
+    },
+    {
+      "id": "PUR",
+      "name": "Purdue",
+      "nickname": "Boilermakers",
+      "emoji": "🚂",
+      "espnId": "2509",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2509.png",
+      "colors": {
+        "primary": "#cfb991",
+        "secondary": "#000000",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big Ten"
+    },
+    {
+      "id": "SMU",
+      "name": "SMU",
+      "nickname": "Mustangs",
+      "emoji": "🐎",
+      "espnId": "2567",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2567.png",
+      "colors": {
+        "primary": "#354ca1",
+        "secondary": "#cc0000",
+        "text": "#FFFFFF"
+      },
+      "conference": "ACC"
+    },
+    {
+      "id": "KU",
+      "name": "Kansas",
+      "nickname": "Jayhawks",
+      "emoji": "🐦",
+      "espnId": "2305",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2305.png",
+      "colors": {
+        "primary": "#0051ba",
+        "secondary": "#e8000d",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big 12"
+    },
+    {
+      "id": "TCU",
+      "name": "TCU",
+      "nickname": "Horned Frogs",
+      "emoji": "🐸",
+      "espnId": "2628",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2628.png",
+      "colors": {
+        "primary": "#4d1979",
+        "secondary": "#ffffff",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big 12"
+    },
+    {
+      "id": "TTU",
+      "name": "Texas Tech",
+      "nickname": "Red Raiders",
+      "emoji": "🤠",
+      "espnId": "2641",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2641.png",
+      "colors": {
+        "primary": "#cc0000",
+        "secondary": "#000000",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big 12"
+    },
+    {
+      "id": "UCF",
+      "name": "UCF",
+      "nickname": "Knights",
+      "emoji": "⚔️",
+      "espnId": "2116",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2116.png",
+      "colors": {
+        "primary": "#ba9b37",
+        "secondary": "#000000",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big 12"
+    },
+    {
+      "id": "CIN",
+      "name": "Cincinnati",
+      "nickname": "Bearcats",
+      "emoji": "🐾",
+      "espnId": "2132",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/ncaa/500/2132.png",
+      "colors": {
+        "primary": "#e00122",
+        "secondary": "#000000",
+        "text": "#FFFFFF"
+      },
+      "conference": "Big 12"
     }
   ],
   "games": [
