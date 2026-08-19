@@ -475,16 +475,6 @@ app.delete('/api/parties/:partyCode', async (req, res) => {
   res.json({ success: true, message: `Party ${code} has been successfully deleted.` });
 });
 
-// Serve frontend build in production
-app.use(express.static(path.join(__dirname, 'dist')));
-
-app.get('*', (req, res) => {
-  if (req.originalUrl.startsWith('/api')) {
-    return res.status(404).json({ error: "API endpoint not found." });
-  }
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
 // Function: Automatically fetch scores/winners from ESPN score API in the background
 async function autoSyncScores() {
   console.log("Starting background automatic scores sync with ESPN...");
