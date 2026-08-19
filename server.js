@@ -550,34 +550,6 @@ async function autoSyncScores() {
           return false;
         });
         
-        if (matchedGame && matchedGame.winner === null) {
-          const winnerTeamObj = db.teams.find(t => t.espnId === winnerEspnId);
-          if (winnerTeamObj) {
-            matchedGame.winner = winnerTeamObj.id;
-            updatedCount++;
-          } else {
-            if (trackedHome) {
-              matchedGame.winner = (matchedGame.home === trackedHome.id) ? matchedGame.away : matchedGame.home;
-            } else if (trackedAway) {
-              matchedGame.winner = (matchedGame.home === trackedAway.id) ? matchedGame.away : matchedGame.home;
-            }
-            updatedCount++;
-          }
-        }
-      });
-    }
-    
-    if (updatedCount > 0) {
-      await writeDB(db);
-      console.log(`Automatic score sync complete: updated ${updatedCount} outcomes!`);
-    } else {
-      console.log("Automatic score sync complete: no new game outcomes to update.");
-    }
-  } catch (err) {
-    console.error("Failed executing automatic background score sync:", err);
-  }
-}
-
 // Endpoint: debug database connectivity status
 app.get('/api/debug', async (req, res) => {
   const upstashUrlConfigured = !!UPSTASH_URL;
@@ -637,6 +609,109 @@ app.get('/api/debug', async (req, res) => {
     dataSummary
   });
 });
+
+// Serve frontend build in production
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(404).json({ error: "API endpoint not found." });
+  }
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// Function: Automatically fetch scores/winners from ESPN score API in the background
+async function autoSyncScores() {
+  console.log("Starting background automatic scores sync with ESPN...");
+  try {
+    const db = await readDB();
+    let updatedCount = 0;
+    
+    // NCAA division 1 FBS subdivision (group 80) scoreboard api
+    for (let w = 1; w <= 13; w++) {
+      const espnUrl = `https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?groups=80&week=${w}`;
+      const response = await fetch(espnUrl);
+      if (!response.ok) continue;
+      
+      const data = await response.json();
+      const events = data.events || [];
+      
+      events.forEach(event => {
+        const completed = event.status?.type?.completed;
+        const detail = event.status?.type?.detail || '';
+        
+        // Skip games that aren't finished
+        if (!completed || !detail.includes('Final')) return;
+        
+        const competitors = event.competitions?.[0]?.competitors || [];
+        const homeCompetitor = competitors.find(c => c.homeAway === 'home');
+        const awayCompetitor = competitors.find(c => c.homeAway === 'away');
+        if (!homeCompetitor || !awayCompetitor) return;
+        
+        const homeEspnId = homeCompetitor.team?.id;
+        const awayEspnId = awayCompetitor.team?.id;
+        
+        const homeScore = parseInt(homeCompetitor.score, 10);
+        const awayScore = parseInt(awayCompetitor.score, 10);
+        
+        let winnerEspnId = null;
+        if (homeScore > awayScore) {
+          winnerEspnId = homeEspnId;
+        } else if (awayScore > homeScore) {
+          winnerEspnId = awayEspnId;
+        }
+        
+        if (!winnerEspnId) return;
+        
+        // Match home or away in our database
+        const trackedHome = db.teams.find(t => t.espnId === homeEspnId);
+        const trackedAway = db.teams.find(t => t.espnId === awayEspnId);
+        
+        if (!trackedHome && !trackedAway) return;
+        
+        const matchedGame = db.games.find(g => {
+          if (g.week !== w) return false;
+          
+          if (trackedHome && trackedAway) {
+            return (g.home === trackedHome.id && g.away === trackedAway.id) ||
+                   (g.home === trackedAway.id && g.away === trackedHome.id);
+          }
+          if (trackedHome) {
+            return g.home === trackedHome.id || g.away === trackedHome.id;
+          }
+          if (trackedAway) {
+            return g.home === trackedAway.id || g.away === trackedAway.id;
+          }
+          return false;
+        });
+        
+        if (matchedGame && matchedGame.winner === null) {
+          const winnerTeamObj = db.teams.find(t => t.espnId === winnerEspnId);
+          if (winnerTeamObj) {
+            matchedGame.winner = winnerTeamObj.id;
+            updatedCount++;
+          } else {
+            if (trackedHome) {
+              matchedGame.winner = (matchedGame.home === trackedHome.id) ? matchedGame.away : matchedGame.home;
+            } else if (trackedAway) {
+              matchedGame.winner = (matchedGame.home === trackedAway.id) ? matchedGame.away : matchedGame.home;
+            }
+            updatedCount++;
+          }
+        }
+      });
+    }
+    
+    if (updatedCount > 0) {
+      await writeDB(db);
+      console.log(`Automatic score sync complete: updated ${updatedCount} outcomes!`);
+    } else {
+      console.log("Automatic score sync complete: no new game outcomes to update.");
+    }
+  } catch (err) {
+    console.error("Failed executing automatic background score sync:", err);
+  }
+}
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
