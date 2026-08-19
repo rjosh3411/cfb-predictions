@@ -1049,7 +1049,9 @@ export default function App() {
                       ) : (
                         <span className="team-card-emoji">{t.emoji}</span>
                       )}
-                      <span className="team-card-name" style={{ fontSize: '0.8rem' }}>{t.name}</span>
+                      <span className="team-card-name" style={{ fontSize: '0.8rem' }}>
+                        {t.ranking ? `#${t.ranking} ` : ''}{t.name}
+                      </span>
                       <span className="team-card-record">{record.wins}-{record.losses}</span>
                     </div>
                   );
@@ -1072,7 +1074,7 @@ export default function App() {
                     )}
                   </div>
                   <div className="schedule-header-info">
-                    <h2>{selectedTeam.name} {selectedTeam.nickname}</h2>
+                    <h2>{selectedTeam.ranking ? `#${selectedTeam.ranking} ` : ''}{selectedTeam.name} {selectedTeam.nickname}</h2>
                     <p>
                       <span>{selectedTeam.conference} Conference</span>
                       <span>&bull;</span>
@@ -1124,7 +1126,7 @@ export default function App() {
                               ) : (
                                 <span className="opponent-emoji" style={{ marginRight: '6px' }}>{opponentObj?.emoji || '🏈'}</span>
                               )}
-                              <span className="opponent-name">{opponentName}</span>
+                              <span className="opponent-name">{opponentObj?.ranking ? `#${opponentObj.ranking} ` : ''}{opponentName}</span>
                               {opponentObj && <span className="opponent-badge">{opponentObj.conference}</span>}
                             </div>
                             
@@ -1313,10 +1315,10 @@ export default function App() {
                               <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block' }}>Week {g.week}</span>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600', fontSize: '0.9rem' }}>
                                 {(g.awayLogo || awayTeam?.logoUrl) && <img src={g.awayLogo || awayTeam.logoUrl} alt={awayName} style={{ width: '18px', height: '18px', objectFit: 'contain' }} />}
-                                <span>{awayName}</span> 
+                                <span>{awayTeam?.ranking ? `#${awayTeam.ranking} ` : ''}{awayName}</span> 
                                 <span style={{ color: '#64748b', fontWeight: '400', fontSize: '0.8rem' }}>at</span>
                                 {(g.homeLogo || homeTeam?.logoUrl) && <img src={g.homeLogo || homeTeam.logoUrl} alt={homeName} style={{ width: '18px', height: '18px', objectFit: 'contain' }} />}
-                                <span>{homeName}</span>
+                                <span>{homeTeam?.ranking ? `#${homeTeam.ranking} ` : ''}{homeName}</span>
                               </div>
                             </div>
                             
@@ -1332,12 +1334,12 @@ export default function App() {
                                   {userPick === g.home ? (
                                     <>
                                       {(g.homeLogo || homeTeam?.logoUrl) && <img src={g.homeLogo || homeTeam.logoUrl} alt={homeName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
-                                      <span>{homeName}</span>
+                                      <span>{homeTeam?.ranking ? `#${homeTeam.ranking} ` : ''}{homeName}</span>
                                     </>
                                   ) : (
                                     <>
                                       {(g.awayLogo || awayTeam?.logoUrl) && <img src={g.awayLogo || awayTeam.logoUrl} alt={awayName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
-                                      <span>{awayName}</span>
+                                      <span>{awayTeam?.ranking ? `#${awayTeam.ranking} ` : ''}{awayName}</span>
                                     </>
                                   )}
                                 </div>
@@ -1353,12 +1355,12 @@ export default function App() {
                                   {buddyPick === g.home ? (
                                     <>
                                       {(g.homeLogo || homeTeam?.logoUrl) && <img src={g.homeLogo || homeTeam.logoUrl} alt={homeName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
-                                      <span>{homeName}</span>
+                                      <span>{homeTeam?.ranking ? `#${homeTeam.ranking} ` : ''}{homeName}</span>
                                     </>
                                   ) : (
                                     <>
                                       {(g.awayLogo || awayTeam?.logoUrl) && <img src={g.awayLogo || awayTeam.logoUrl} alt={awayName} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />}
-                                      <span>{awayName}</span>
+                                      <span>{awayTeam?.ranking ? `#${awayTeam.ranking} ` : ''}{awayName}</span>
                                     </>
                                   )}
                                 </div>
@@ -1440,7 +1442,7 @@ export default function App() {
                             ) : (
                               <span>{t.emoji}</span>
                             )}
-                            <span>{t.name}</span>
+                            <span>{t.ranking ? `#${t.ranking} ` : ''}{t.name}</span>
                           </td>
                           <td style={{ padding: '12px 10px', color: 'var(--text-secondary)' }}>{t.conference}</td>
                           <td style={{ padding: '12px 10px', fontWeight: '600', color: 'var(--color-win)' }}>
@@ -1541,10 +1543,10 @@ export default function App() {
                       <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block' }}>Week {g.week}</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '700', marginTop: '4px' }}>
                         {(g.awayLogo || awayTeam?.logoUrl) ? <img src={g.awayLogo || awayTeam.logoUrl} alt={awayName} style={{ width: '18px', height: '18px', objectFit: 'contain' }} /> : '🏈'}
-                        <span>{awayName}</span>
+                        <span>{awayTeam?.ranking ? `#${awayTeam.ranking} ` : ''}{awayName}</span>
                         <span style={{ color: '#64748b', fontWeight: '400', fontSize: '0.8rem' }}>at</span>
                         {(g.homeLogo || homeTeam?.logoUrl) ? <img src={g.homeLogo || homeTeam.logoUrl} alt={homeName} style={{ width: '18px', height: '18px', objectFit: 'contain' }} /> : '🏟️'}
-                        <span>{homeName}</span>
+                        <span>{homeTeam?.ranking ? `#${homeTeam.ranking} ` : ''}{homeName}</span>
                       </div>
                     </div>
 

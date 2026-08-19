@@ -12,7 +12,8 @@
         "secondary": "#dbcca6",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "CAL",
@@ -26,7 +27,8 @@
         "secondary": "#ffc72c",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "CLEM",
@@ -40,7 +42,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "DUKE",
@@ -54,7 +57,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "FSU",
@@ -68,7 +72,8 @@
         "secondary": "#ceb888",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "GT",
@@ -82,7 +87,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "LOU",
@@ -96,7 +102,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": 24
     },
     {
       "id": "MIA",
@@ -110,7 +117,8 @@
         "secondary": "#F47321",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": 7
     },
     {
       "id": "NCSU",
@@ -124,7 +132,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "UNC",
@@ -138,7 +147,8 @@
         "secondary": "#13294b",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "PITT",
@@ -152,7 +162,8 @@
         "secondary": "#ffb81c",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "STAN",
@@ -166,7 +177,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "SYR",
@@ -180,7 +192,8 @@
         "secondary": "#ff431b",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "UVA",
@@ -194,7 +207,8 @@
         "secondary": "#f84c1e",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "VT",
@@ -208,7 +222,8 @@
         "secondary": "#cf4520",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "WAKE",
@@ -222,7 +237,8 @@
         "secondary": "#2c2a29",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": null
     },
     {
       "id": "ARIZ",
@@ -236,7 +252,8 @@
         "secondary": "#003366",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "ASU",
@@ -250,7 +267,8 @@
         "secondary": "#8c1d40",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "BAY",
@@ -264,7 +282,8 @@
         "secondary": "#ffb81c",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "BYU",
@@ -278,7 +297,8 @@
         "secondary": "#002e5d",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": 14
     },
     {
       "id": "COLO",
@@ -292,7 +312,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "HOU",
@@ -306,7 +327,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": 23
     },
     {
       "id": "ISU",
@@ -320,7 +342,8 @@
         "secondary": "#ffc72a",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "KSU",
@@ -334,7 +357,8 @@
         "secondary": "#A3AAAE",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "UTAH",
@@ -348,7 +372,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": 21
     },
     {
       "id": "WVU",
@@ -362,7 +387,8 @@
         "secondary": "#002855",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "IU",
@@ -376,7 +402,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 6
     },
     {
       "id": "MD",
@@ -390,7 +417,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "MICH",
@@ -404,7 +432,8 @@
         "secondary": "#ffcb05",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 16
     },
     {
       "id": "MSU",
@@ -418,7 +447,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "MINN",
@@ -432,7 +462,8 @@
         "secondary": "#fab41c",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "NEB",
@@ -446,7 +477,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "NU",
@@ -460,7 +492,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "OKST",
@@ -474,7 +507,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "ORE",
@@ -488,7 +522,8 @@
         "secondary": "#FEE123",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 2
     },
     {
       "id": "PSU",
@@ -502,7 +537,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 18
     },
     {
       "id": "RUTG",
@@ -516,7 +552,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "UCLA",
@@ -530,7 +567,8 @@
         "secondary": "#f2a900",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "USC",
@@ -544,7 +582,8 @@
         "secondary": "#ffc72c",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 14
     },
     {
       "id": "WASH",
@@ -558,7 +597,8 @@
         "secondary": "#e8d3a2",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 17
     },
     {
       "id": "WIS",
@@ -572,7 +612,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "AMH",
@@ -586,7 +627,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ASH",
@@ -600,7 +642,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "AUGS",
@@ -614,7 +657,8 @@
         "secondary": "#a9a9aa",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BW",
@@ -628,7 +672,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BATE",
@@ -642,7 +687,8 @@
         "secondary": "#b2b3b2",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BELO",
@@ -656,7 +702,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BST",
@@ -670,7 +717,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BOIS",
@@ -684,7 +732,8 @@
         "secondary": "#d64309",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BGSU",
@@ -698,7 +747,8 @@
         "secondary": "#4f2c1d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BRIS",
@@ -712,7 +762,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BRWN",
@@ -726,7 +777,8 @@
         "secondary": "#949300",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "BVU",
@@ -740,7 +792,8 @@
         "secondary": "#001440",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CP",
@@ -754,7 +807,8 @@
         "secondary": "#eed897",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CRU",
@@ -768,7 +822,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UTC",
@@ -782,7 +837,8 @@
         "secondary": "#dca71d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CHI",
@@ -796,7 +852,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CMS",
@@ -810,7 +867,8 @@
         "secondary": "#feba15",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CLBY",
@@ -824,7 +882,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "COMU",
@@ -838,7 +897,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CSU",
@@ -852,7 +912,8 @@
         "secondary": "#c8c372",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "COLU",
@@ -866,7 +927,8 @@
         "secondary": "#183863",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "COR",
@@ -880,7 +942,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "CC",
@@ -894,7 +957,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "DART",
@@ -908,7 +972,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "DEF",
@@ -922,7 +987,8 @@
         "secondary": "#ded27c",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "DEL",
@@ -936,7 +1002,8 @@
         "secondary": "#ffd200",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "DPU",
@@ -950,7 +1017,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "DBQ",
@@ -964,7 +1032,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ECU",
@@ -978,7 +1047,8 @@
         "secondary": "#ffc72c",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ELMH",
@@ -992,7 +1062,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ERKA",
@@ -1006,7 +1077,8 @@
         "secondary": "#c09a05",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "FBSU",
@@ -1020,7 +1092,8 @@
         "secondary": "#fbbf16",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "FAMU",
@@ -1034,7 +1107,8 @@
         "secondary": "#00843d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "FRES",
@@ -1048,7 +1122,8 @@
         "secondary": "#13284c",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "FUR",
@@ -1062,7 +1137,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "GTWN",
@@ -1076,7 +1152,8 @@
         "secondary": "#001c58",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "GASO",
@@ -1090,7 +1167,8 @@
         "secondary": "#a3aaae",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "GVSU",
@@ -1104,7 +1182,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "GRNL",
@@ -1118,7 +1197,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "GRO",
@@ -1132,7 +1212,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HMLN",
@@ -1146,7 +1227,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HSC",
@@ -1160,7 +1242,8 @@
         "secondary": "#a8b1b7",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HRTW",
@@ -1174,7 +1257,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HARV",
@@ -1188,7 +1272,8 @@
         "secondary": "#dbdbdb",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HAW",
@@ -1202,7 +1287,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HDBG",
@@ -1216,7 +1302,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HBRT",
@@ -1230,7 +1317,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HC",
@@ -1244,7 +1332,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "HOW",
@@ -1258,7 +1347,8 @@
         "secondary": "#e51937",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "IDHO",
@@ -1272,7 +1362,8 @@
         "secondary": "#8c6e4a",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "IDST",
@@ -1286,7 +1377,8 @@
         "secondary": "#e9a126",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ILWU",
@@ -1300,7 +1392,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "INST",
@@ -1314,7 +1407,8 @@
         "secondary": "#f0f0f0",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ITH",
@@ -1328,7 +1422,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "JXST",
@@ -1342,7 +1437,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "JMU",
@@ -1356,7 +1452,8 @@
         "secondary": "#cbb677",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "JHU",
@@ -1370,7 +1467,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "JUN",
@@ -1384,7 +1482,8 @@
         "secondary": "#ac9c66",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "KALC",
@@ -1398,7 +1497,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "KNGS",
@@ -1412,7 +1512,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "KNOX",
@@ -1426,7 +1527,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "LFC",
@@ -1440,7 +1542,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "LAW",
@@ -1454,7 +1557,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "LINF",
@@ -1468,7 +1572,8 @@
         "secondary": "#d41e47",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "LHU",
@@ -1482,7 +1587,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "LOR",
@@ -1496,7 +1602,8 @@
         "secondary": "#d2b888",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UL",
@@ -1510,7 +1617,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "LUTH",
@@ -1524,7 +1632,8 @@
         "secondary": "#a5bbda",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ME",
@@ -1538,7 +1647,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UMMA",
@@ -1552,7 +1662,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MRSH",
@@ -1566,7 +1677,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MMT",
@@ -1580,7 +1692,8 @@
         "secondary": "#fed523",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MCM",
@@ -1594,7 +1707,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MEM",
@@ -1608,7 +1722,8 @@
         "secondary": "#8e908f",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MU",
@@ -1622,7 +1737,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "M-OH",
@@ -1636,7 +1752,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MILL",
@@ -1650,7 +1767,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MILK",
@@ -1664,7 +1782,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UMD",
@@ -1678,7 +1797,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MOWE",
@@ -1692,7 +1812,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MIT",
@@ -1706,7 +1827,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MONT",
@@ -1720,7 +1842,8 @@
         "secondary": "#666666",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MTST",
@@ -1734,7 +1857,8 @@
         "secondary": "#bc955c",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MRHO",
@@ -1748,7 +1872,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MUR",
@@ -1762,7 +1887,8 @@
         "secondary": "#000e00",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UNH",
@@ -1776,7 +1902,8 @@
         "secondary": "#c3c4c6",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UNM",
@@ -1790,7 +1917,8 @@
         "secondary": "#a7a8aa",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "NMSU",
@@ -1804,7 +1932,8 @@
         "secondary": "#231f20",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "NCW",
@@ -1818,7 +1947,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UND",
@@ -1832,7 +1962,8 @@
         "secondary": "#c2c3c0",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "NPU",
@@ -1846,7 +1977,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UNT",
@@ -1860,7 +1992,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "NESU",
@@ -1874,7 +2007,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "NMI",
@@ -1888,7 +2022,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MWMO",
@@ -1902,7 +2037,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "OHIO",
@@ -1916,7 +2052,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "OSU",
@@ -1930,7 +2067,8 @@
         "secondary": "#a8adb4",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 1
     },
     {
       "id": "ODU",
@@ -1944,7 +2082,8 @@
         "secondary": "#a1d2f1",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "ORST",
@@ -1958,7 +2097,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "PCOR",
@@ -1972,7 +2112,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "PENN",
@@ -1986,7 +2127,8 @@
         "secondary": "#a6163d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "PIKEV",
@@ -2000,7 +2142,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "PTSU",
@@ -2014,7 +2157,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "PRIN",
@@ -2028,7 +2172,8 @@
         "secondary": "#ff6000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "REDL",
@@ -2042,7 +2187,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "URI",
@@ -2056,7 +2202,8 @@
         "secondary": "#5ab3e8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "RICE",
@@ -2070,7 +2217,8 @@
         "secondary": "#c1c6c8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "RICH",
@@ -2084,7 +2232,8 @@
         "secondary": "#b90b2e",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "URNY",
@@ -2098,7 +2247,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "RHIT",
@@ -2112,7 +2262,8 @@
         "secondary": "#b3b2b1",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SAC",
@@ -2126,7 +2277,8 @@
         "secondary": "#cdb97d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SVSU",
@@ -2140,7 +2292,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "USD",
@@ -2154,7 +2307,8 @@
         "secondary": "#2f99d4",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SDSU",
@@ -2168,7 +2322,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SJSU",
@@ -2182,7 +2337,8 @@
         "secondary": "#ffb81a",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SRU",
@@ -2196,7 +2352,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "USA",
@@ -2210,7 +2367,8 @@
         "secondary": "#bf0d3e",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SDAK",
@@ -2224,7 +2382,8 @@
         "secondary": "#f0f0f0",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "USF",
@@ -2238,7 +2397,8 @@
         "secondary": "#cfc493",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SEU",
@@ -2252,7 +2412,8 @@
         "secondary": "#ffc423",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SEOK",
@@ -2266,7 +2427,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SIU",
@@ -2280,7 +2442,8 @@
         "secondary": "#c2c3c0",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SNU",
@@ -2294,7 +2457,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SUU",
@@ -2308,7 +2472,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SPR",
@@ -2322,7 +2487,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "OLAF",
@@ -2336,7 +2502,8 @@
         "secondary": "#d18c29",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "STET",
@@ -2350,7 +2517,8 @@
         "secondary": "#56854e",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "STO",
@@ -2364,7 +2532,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "SUSQ",
@@ -2378,7 +2547,8 @@
         "secondary": "#fd6b0d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "TEM",
@@ -2392,7 +2562,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "TOW",
@@ -2406,7 +2577,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "TUFT",
@@ -2420,7 +2592,8 @@
         "secondary": "#c6beb6",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "TLSA",
@@ -2434,7 +2607,8 @@
         "secondary": "#d0b787",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UAB",
@@ -2448,7 +2622,8 @@
         "secondary": "#fdb913",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UCD",
@@ -2462,7 +2637,8 @@
         "secondary": "#c3c4c6",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UNNY",
@@ -2476,7 +2652,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "VTSC",
@@ -2490,7 +2667,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "VILL",
@@ -2504,7 +2682,8 @@
         "secondary": "#13b5ea",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "WAB",
@@ -2518,7 +2697,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "WUMO",
@@ -2532,7 +2712,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "WSU",
@@ -2546,7 +2727,8 @@
         "secondary": "#4d4d4d",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "WSMI",
@@ -2560,7 +2742,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "WCHT",
@@ -2574,7 +2757,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "WKU",
@@ -2588,7 +2772,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UWO",
@@ -2602,7 +2787,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "UWP",
@@ -2616,7 +2802,8 @@
         "secondary": "#94a3b8",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "YALE",
@@ -2630,7 +2817,8 @@
         "secondary": "#286dc0",
         "text": "#FFFFFF"
       },
-      "conference": "Group of 5"
+      "conference": "Group of 5",
+      "ranking": null
     },
     {
       "id": "MASS",
@@ -2644,7 +2832,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Ind."
+      "conference": "Ind.",
+      "ranking": null
     },
     {
       "id": "ND",
@@ -2658,7 +2847,8 @@
         "secondary": "#c99700",
         "text": "#FFFFFF"
       },
-      "conference": "Ind."
+      "conference": "Ind.",
+      "ranking": 4
     },
     {
       "id": "CONN",
@@ -2672,7 +2862,8 @@
         "secondary": "#a2aaad",
         "text": "#FFFFFF"
       },
-      "conference": "Ind."
+      "conference": "Ind.",
+      "ranking": null
     },
     {
       "id": "BAMA",
@@ -2686,7 +2877,8 @@
         "secondary": "#FFFFFF",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 13
     },
     {
       "id": "ARK",
@@ -2700,7 +2892,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "AUB",
@@ -2714,7 +2907,8 @@
         "secondary": "#f26522",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "FLA",
@@ -2728,7 +2922,8 @@
         "secondary": "#fa4616",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "UGA",
@@ -2742,7 +2937,8 @@
         "secondary": "#2c2a29",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 3
     },
     {
       "id": "UK",
@@ -2756,7 +2952,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "LSU",
@@ -2770,7 +2967,8 @@
         "secondary": "#fdd023",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 11
     },
     {
       "id": "MSST",
@@ -2784,7 +2982,8 @@
         "secondary": "#FFFFFF",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "MIZZ",
@@ -2798,7 +2997,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 25
     },
     {
       "id": "OU",
@@ -2812,7 +3012,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 10
     },
     {
       "id": "MISS",
@@ -2826,7 +3027,8 @@
         "secondary": "#cf142b",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 9
     },
     {
       "id": "SC",
@@ -2840,7 +3042,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "TENN",
@@ -2854,7 +3057,8 @@
         "secondary": "#FFFFFF",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 20
     },
     {
       "id": "TEX",
@@ -2868,7 +3072,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 5
     },
     {
       "id": "TA&M",
@@ -2882,7 +3087,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": 8
     },
     {
       "id": "VAN",
@@ -2896,7 +3102,8 @@
         "secondary": "#cfae70",
         "text": "#FFFFFF"
       },
-      "conference": "SEC"
+      "conference": "SEC",
+      "ranking": null
     },
     {
       "id": "IOWA",
@@ -2910,7 +3117,8 @@
         "secondary": "#ffe100",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": 22
     },
     {
       "id": "ILL",
@@ -2924,7 +3132,8 @@
         "secondary": "#f54a00",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "PUR",
@@ -2938,7 +3147,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big Ten"
+      "conference": "Big Ten",
+      "ranking": null
     },
     {
       "id": "SMU",
@@ -2952,7 +3162,8 @@
         "secondary": "#cc0000",
         "text": "#FFFFFF"
       },
-      "conference": "ACC"
+      "conference": "ACC",
+      "ranking": 19
     },
     {
       "id": "KU",
@@ -2966,7 +3177,8 @@
         "secondary": "#e8000d",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "TCU",
@@ -2980,7 +3192,8 @@
         "secondary": "#ffffff",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "TTU",
@@ -2994,7 +3207,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": 12
     },
     {
       "id": "UCF",
@@ -3008,7 +3222,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     },
     {
       "id": "CIN",
@@ -3022,7 +3237,8 @@
         "secondary": "#000000",
         "text": "#FFFFFF"
       },
-      "conference": "Big 12"
+      "conference": "Big 12",
+      "ranking": null
     }
   ],
   "games": [
