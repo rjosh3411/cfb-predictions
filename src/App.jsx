@@ -1425,6 +1425,14 @@ export default function App() {
                       return { team: t, userRec, buddyRec };
                     })
                     .sort((a, b) => {
+                      if (standingsConfFilter === 'ALL') {
+                        const rankA = a.team.ranking !== undefined && a.team.ranking !== null ? a.team.ranking : Infinity;
+                        const rankB = b.team.ranking !== undefined && b.team.ranking !== null ? b.team.ranking : Infinity;
+                        if (rankA !== rankB) {
+                          return rankA - rankB;
+                        }
+                      }
+                      
                       if (b.userRec.wins !== a.userRec.wins) {
                         return b.userRec.wins - a.userRec.wins;
                       }
