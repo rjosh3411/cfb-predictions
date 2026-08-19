@@ -578,6 +578,66 @@ async function autoSyncScores() {
   }
 }
 
+// Endpoint: debug database connectivity status
+app.get('/api/debug', async (req, res) => {
+  const upstashUrlConfigured = !!UPSTASH_URL;
+  const upstashTokenConfigured = !!UPSTASH_TOKEN;
+  
+  let dbSource = "local_file";
+  let upstashReachable = false;
+  let errorMsg = null;
+  let dataSummary = {};
+  
+  if (upstashUrlConfigured && upstashTokenConfigured) {
+    try {
+      const testRes = await fetch(`${UPSTASH_URL}/get/cfb_database_json`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+      });
+      if (testRes.ok) {
+        dbSource = "upstash_redis";
+        upstashReachable = true;
+        const payload = await testRes.json();
+        if (payload.result) {
+          const db = JSON.parse(payload.result);
+          dataSummary = {
+            usersCount: db.users?.length || 0,
+            partiesCount: db.parties?.length || 0,
+            predictionsCount: Object.keys(db.predictions || {}).length
+          };
+        } else {
+          dataSummary = { status: "empty_result" };
+        }
+      } else {
+        errorMsg = `Upstash returned status ${testRes.status}: ${testRes.statusText}`;
+      }
+    } catch (err) {
+      errorMsg = err.message || String(err);
+    }
+  } else {
+    // If not configured, load from local file
+    try {
+      const data = await fs.readFile(DB_FILE, 'utf8');
+      const db = JSON.parse(data);
+      dataSummary = {
+        usersCount: db.users?.length || 0,
+        partiesCount: db.parties?.length || 0,
+        predictionsCount: Object.keys(db.predictions || {}).length
+      };
+    } catch (err) {
+      errorMsg = err.message || String(err);
+    }
+  }
+  
+  res.json({
+    upstashUrlConfigured,
+    upstashTokenConfigured,
+    dbSource,
+    upstashReachable,
+    error: errorMsg,
+    dataSummary
+  });
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
   
