@@ -12,6 +12,49 @@ export default function App() {
   const [activePartyCode, setActivePartyCode] = useState(''); // Active party code
   const [showPartyOnboarding, setShowPartyOnboarding] = useState(false);
   
+  const syncAndSetPredictions = (serverPreds, userId) => {
+    if (!userId) {
+      setPredictions(serverPreds);
+      return;
+    }
+    
+    // Load local predictions from localStorage
+    const localPredsRaw = localStorage.getItem(`gridiron_predictions_${userId}`);
+    const localPreds = localPredsRaw ? JSON.parse(localPredsRaw) : {};
+    const userServerPreds = serverPreds[userId] || {};
+    
+    // Merge: server overrides local, but local fills in any missing ones
+    const mergedUserPreds = { ...localPreds, ...userServerPreds };
+    
+    // Save merged back to localStorage to keep it up to date
+    localStorage.setItem(`gridiron_predictions_${userId}`, JSON.stringify(mergedUserPreds));
+    
+    // Check if there are any predictions in localStorage that are missing from the server
+    const missingOnServer = {};
+    let needsSync = false;
+    Object.keys(localPreds).forEach(gameId => {
+      if (userServerPreds[gameId] === undefined) {
+        missingOnServer[gameId] = localPreds[gameId];
+        needsSync = true;
+      }
+    });
+    
+    if (needsSync) {
+      console.log("Restoring local predictions back to server database...", missingOnServer);
+      fetch(`${API_BASE}/predictions/${userId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ predictions: missingOnServer })
+      }).catch(err => console.error("Auto-syncing predictions to server failed:", err));
+    }
+    
+    // Update state
+    setPredictions({
+      ...serverPreds,
+      [userId]: mergedUserPreds
+    });
+  };
+  
   // Onboarding (Auth) State
   const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
   const [partyMode, setPartyMode] = useState('join'); // 'join' | 'create'
@@ -82,7 +125,7 @@ export default function App() {
                 fetch(`${API_BASE}/predictions?partyCode=${activeCode}`)
               ]);
               setUsers(await usersRes.json());
-              setPredictions(await predsRes.json());
+              syncAndSetPredictions(await predsRes.json(), savedUsername);
             } else {
               setShowPartyOnboarding(true);
             }
@@ -172,7 +215,7 @@ export default function App() {
         const usersRes = await fetch(`${API_BASE}/users?partyCode=${activeCode}`);
         const predsRes = await fetch(`${API_BASE}/predictions?partyCode=${activeCode}`);
         setUsers(await usersRes.json());
-        setPredictions(await predsRes.json());
+        syncAndSetPredictions(await predsRes.json(), data.user.id);
         setShowPartyOnboarding(false);
       } else {
         setActivePartyCode('');
@@ -268,7 +311,7 @@ export default function App() {
       const usersRes = await fetch(`${API_BASE}/users?partyCode=${activeCode}`);
       const predsRes = await fetch(`${API_BASE}/predictions?partyCode=${activeCode}`);
       setUsers(await usersRes.json());
-      setPredictions(await predsRes.json());
+      syncAndSetPredictions(await predsRes.json(), currentUser.id);
       setShowPartyOnboarding(false);
       setPartyNameInput('');
     } catch (err) {
@@ -315,7 +358,7 @@ export default function App() {
       const usersRes = await fetch(`${API_BASE}/users?partyCode=${activeCode}`);
       const predsRes = await fetch(`${API_BASE}/predictions?partyCode=${activeCode}`);
       setUsers(await usersRes.json());
-      setPredictions(await predsRes.json());
+      syncAndSetPredictions(await predsRes.json(), currentUser.id);
       setShowPartyOnboarding(false);
       setPartyCodeInput('');
     } catch (err) {
@@ -340,7 +383,7 @@ export default function App() {
       const predsData = await predsRes.json();
       
       setUsers(usersData);
-      setPredictions(predsData);
+      syncAndSetPredictions(predsData, currentUser.id);
       
       const otherUser = usersData.find(u => u.id !== currentUser.id);
       setBuddyId(otherUser ? otherUser.id : '');
@@ -416,7 +459,7 @@ export default function App() {
     try {
       const predsRes = await fetch(`${API_BASE}/predictions?partyCode=${activePartyCode}`);
       if (predsRes.ok) {
-        setPredictions(await predsRes.json());
+        syncAndSetPredictions(await predsRes.json(), currentUser?.id);
       }
     } catch (err) {
       console.error("Error refreshing predictions:", err);
@@ -431,6 +474,9 @@ export default function App() {
     
     const userPreds = predictions[currentUser.id] || {};
     const newPreds = { ...userPreds, [gameId]: predictedWinner };
+    
+    // Save to localStorage immediately as a backup
+    localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(newPreds));
     
     // Optimistic UI state update
     setPredictions(prev => ({
@@ -447,6 +493,8 @@ export default function App() {
     } catch (err) {
       console.error("Failed to Sync prediction to server:", err);
       // Fallback rollback
+      const rolledBackPreds = { ...userPreds };
+      localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
       setPredictions(prev => ({
         ...prev,
         [currentUser.id]: userPreds
