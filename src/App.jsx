@@ -150,13 +150,18 @@ export default function App() {
     loadData();
   }, []);
 
-  // Update Buddy ID defaults when users change
+  // Update Buddy ID defaults when users change or if the current buddyId is invalid
   useEffect(() => {
-    if (currentUser && users.length > 1 && !buddyId) {
-      const otherUser = users.find(u => u.id !== currentUser.id);
-      if (otherUser) {
-        setBuddyId(otherUser.id);
+    if (currentUser && users.length > 1) {
+      const buddyExists = users.some(u => u.id === buddyId && u.id !== currentUser.id);
+      if (!buddyId || !buddyExists) {
+        const otherUser = users.find(u => u.id !== currentUser.id);
+        if (otherUser) {
+          setBuddyId(otherUser.id);
+        }
       }
+    } else if (users.length <= 1 && buddyId !== '') {
+      setBuddyId('');
     }
   }, [users, currentUser, buddyId]);
 
@@ -1272,6 +1277,7 @@ export default function App() {
                         onChange={(e) => setBuddyId(e.target.value)}
                         className="modern-select"
                       >
+                        <option value="">-- Select a Buddy --</option>
                         {users.filter(u => u.id !== currentUser.id).map(u => (
                           <option key={u.id} value={u.id}>👤 {u.name}</option>
                         ))}
@@ -1349,7 +1355,7 @@ export default function App() {
                         return userPick && buddyPick && userPick === buddyPick;
                       }
                       if (compFilter === 'disagreements') {
-                        return userPick && buddyPick && userPick !== buddyPick;
+                        return (userPick || buddyPick) && userPick !== buddyPick;
                       }
                       // For 'all', only return games where at least one user has made a prediction
                       return userPick || buddyPick;
@@ -1364,7 +1370,7 @@ export default function App() {
                       const buddyPick = predictions[buddyId]?.[g.id];
                       
                       const isAgree = userPick && buddyPick && userPick === buddyPick;
-                      const isDisagree = userPick && buddyPick && userPick !== buddyPick;
+                      const isDisagree = (userPick || buddyPick) && userPick !== buddyPick;
                       
                       return (
                         <div key={g.id} className="comp-card">
