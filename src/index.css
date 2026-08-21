@@ -555,6 +555,12 @@ html {
   box-shadow: var(--shadow-loss);
 }
 
+.pred-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Comparison View */
 .comp-header-flex {
   display: flex;

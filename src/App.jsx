@@ -1144,11 +1144,19 @@ export default function App() {
                       const prediction = userPreds[g.id];
                       const isPredictedToWin = prediction === selectedTeam.id;
                       const isPredictedToLose = prediction === opponentId;
+                      const isLocked = g.date ? (new Date() > new Date(g.date)) : false;
                       
                       return (
                         <div key={g.id} className="match-card">
                           <div className="match-top">
-                            <span className="match-week">Week {g.week}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span className="match-week">Week {g.week}</span>
+                              {isLocked && (
+                                <span style={{ color: '#ef4444', background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.65rem', fontWeight: 'bold', letterSpacing: '0.05em' }}>
+                                  🔒 LOCKED
+                                </span>
+                              )}
+                            </div>
                             <span className="match-venue">{g.venue || (g.neutral ? 'Neutral Site' : '')}</span>
                           </div>
                           
@@ -1181,13 +1189,15 @@ export default function App() {
                             <div className="pred-picker-container">
                               <button 
                                 className={`pred-btn w-btn ${isPredictedToWin ? 'w-active' : ''}`}
-                                onClick={() => togglePrediction(g.id, selectedTeam.id)}
+                                onClick={() => !isLocked && togglePrediction(g.id, selectedTeam.id)}
+                                disabled={isLocked}
                               >
                                 W
                               </button>
                               <button 
                                 className={`pred-btn l-btn ${isPredictedToLose ? 'l-active' : ''}`}
-                                onClick={() => togglePrediction(g.id, opponentId)}
+                                onClick={() => !isLocked && togglePrediction(g.id, opponentId)}
+                                disabled={isLocked}
                               >
                                 L
                               </button>
