@@ -673,10 +673,14 @@ export default function App() {
     const userPreds = predictions[currentUser.id] || {};
     let finalists = userPreds.heismanFinalists || [];
     let details = userPreds.heismanFinalistsDetails || [];
+    let isRemovingWinner = false;
     
     if (finalists.includes(player.id)) {
       finalists = finalists.filter(id => id !== player.id);
       details = details.filter(d => d.id !== player.id);
+      if (userPreds.heismanWinner === player.id) {
+        isRemovingWinner = true;
+      }
     } else {
       if (finalists.length >= 4) {
         alert("You can select up to 4 Heisman finalists.");
@@ -689,7 +693,8 @@ export default function App() {
     const newPreds = { 
       ...userPreds, 
       heismanFinalists: finalists,
-      heismanFinalistsDetails: details
+      heismanFinalistsDetails: details,
+      ...(isRemovingWinner ? { heismanWinner: null, heismanWinnerDetails: null } : {})
     };
     
     // Save to localStorage immediately as a backup
@@ -708,7 +713,8 @@ export default function App() {
         body: JSON.stringify({ 
           predictions: { 
             heismanFinalists: finalists,
-            heismanFinalistsDetails: details
+            heismanFinalistsDetails: details,
+            ...(isRemovingWinner ? { heismanWinner: null, heismanWinnerDetails: null } : {})
           } 
         })
       });
