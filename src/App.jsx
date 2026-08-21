@@ -9,6 +9,10 @@ export default function App() {
   const [games, setGames] = useState([]);
   const [predictions, setPredictions] = useState({});
   const [heismanCandidates, setHeismanCandidates] = useState([]);
+  const [selectedRosterTeamId, setSelectedRosterTeamId] = useState('');
+  const [rosterSearchQuery, setRosterSearchQuery] = useState('');
+  const [rosterPlayers, setRosterPlayers] = useState([]);
+  const [rosterLoading, setRosterLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState(null); // Global User Profile
   const [activePartyCode, setActivePartyCode] = useState(''); // Active party code
   const [showPartyOnboarding, setShowPartyOnboarding] = useState(false);
@@ -579,6 +583,137 @@ export default function App() {
       });
     } catch (err) {
       console.error("Failed to Sync Heisman Finalists to server:", err);
+      // Fallback rollback
+      const rolledBackPreds = { ...userPreds };
+      localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
+      setPredictions(prev => ({
+        ...prev,
+        [currentUser.id]: userPreds
+      }));
+    }
+  };
+
+  const handleLoadRoster = async (teamId) => {
+    setSelectedRosterTeamId(teamId);
+    if (!teamId) {
+      setRosterPlayers([]);
+      return;
+    }
+    setRosterLoading(true);
+    try {
+      const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/${teamId}/roster`);
+      if (res.ok) {
+        const data = await res.json();
+        const players = [];
+        data.athletes?.forEach(group => {
+          group.items?.forEach(item => {
+            players.push({
+              id: `athlete_${item.id}`,
+              name: item.displayName || item.fullName,
+              position: item.position?.abbreviation || item.position?.name || '',
+              school: data.team?.location || data.team?.displayName || '',
+              logoUrl: data.team?.logo || `https://a.espncdn.com/i/teamlogos/ncaa/500/${teamId}.png`
+            });
+          });
+        });
+        setRosterPlayers(players);
+      }
+    } catch (err) {
+      console.error("Failed to load roster:", err);
+    } finally {
+      setRosterLoading(false);
+    }
+  };
+
+  const handleSelectCustomWinner = async (player) => {
+    if (!currentUser) return;
+    
+    const userPreds = predictions[currentUser.id] || {};
+    const newPreds = { 
+      ...userPreds, 
+      heismanWinner: player.id,
+      heismanWinnerDetails: player
+    };
+    
+    // Save to localStorage immediately as a backup
+    localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(newPreds));
+    
+    // Optimistic UI state update
+    setPredictions(prev => ({
+      ...prev,
+      [currentUser.id]: newPreds
+    }));
+    
+    try {
+      await fetch(`${API_BASE}/predictions/${currentUser.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          predictions: { 
+            heismanWinner: player.id,
+            heismanWinnerDetails: player
+          } 
+        })
+      });
+    } catch (err) {
+      console.error("Failed to Sync Custom Heisman Winner to server:", err);
+      // Fallback rollback
+      const rolledBackPreds = { ...userPreds };
+      localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
+      setPredictions(prev => ({
+        ...prev,
+        [currentUser.id]: userPreds
+      }));
+    }
+  };
+
+  const handleSelectCustomFinalist = async (player) => {
+    if (!currentUser) return;
+    
+    const userPreds = predictions[currentUser.id] || {};
+    let finalists = userPreds.heismanFinalists || [];
+    let details = userPreds.heismanFinalistsDetails || [];
+    
+    if (finalists.includes(player.id)) {
+      finalists = finalists.filter(id => id !== player.id);
+      details = details.filter(d => d.id !== player.id);
+    } else {
+      if (finalists.length >= 4) {
+        alert("You can select up to 4 Heisman finalists.");
+        return;
+      }
+      finalists = [...finalists, player.id];
+      details = [...details, player];
+    }
+    
+    const newPreds = { 
+      ...userPreds, 
+      heismanFinalists: finalists,
+      heismanFinalistsDetails: details
+    };
+    
+    // Save to localStorage immediately as a backup
+    localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(newPreds));
+    
+    // Optimistic UI state update
+    setPredictions(prev => ({
+      ...prev,
+      [currentUser.id]: newPreds
+    }));
+    
+    try {
+      await fetch(`${API_BASE}/predictions/${currentUser.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          predictions: { 
+            heismanFinalists: finalists,
+            heismanFinalistsDetails: details
+          } 
+        })
+      });
+    } catch (err) {
+      console.error("Failed to Sync Custom Heisman Finalists to server:", err);
       // Fallback rollback
       const rolledBackPreds = { ...userPreds };
       localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
@@ -1725,207 +1860,368 @@ export default function App() {
           </div>
         )}
 
-        {activeTab === 'awards' && (
-          <div>
-            <h3 className="section-title">
-              <span>🏆</span> 2026 Heisman Trophy Predictions
-            </h3>
-            
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '20px' }}>
-              Cast your predictions for college football's highest individual honor. Select your projected Heisman Trophy winner and up to 4 finalists.
-            </p>
+        {activeTab === 'awards' && (() => {
+          const userPreds = predictions[currentUser.id] || {};
+          const userWinnerId = userPreds.heismanWinner;
+          const userWinnerDetails = userPreds.heismanWinnerDetails;
+          
+          const winnerCandidates = [...heismanCandidates];
+          if (userWinnerDetails && !heismanCandidates.some(c => c.id === userWinnerId)) {
+            winnerCandidates.push(userWinnerDetails);
+          }
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px', alignItems: 'start' }} className="awards-grid-layout">
-              {/* Left Column: Editor */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                
-                {/* Winner section */}
-                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
-                  <h4 style={{ fontSize: '1.1rem', margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#ffb300' }}>
-                    <span>🥇</span> Projected Heisman Winner
-                  </h4>
+          const userFinalistIds = userPreds.heismanFinalists || [];
+          const userFinalistDetails = userPreds.heismanFinalistsDetails || [];
+          
+          const finalistCandidates = [...heismanCandidates];
+          userFinalistDetails.forEach(f => {
+            if (!heismanCandidates.some(c => c.id === f.id)) {
+              finalistCandidates.push(f);
+            }
+          });
+
+          return (
+            <div>
+              <h3 className="section-title">
+                <span>🏆</span> 2026 Heisman Trophy Predictions
+              </h3>
+              
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '20px' }}>
+                Cast your predictions for college football's highest individual honor. Select your projected Heisman Trophy winner and up to 4 finalists.
+              </p>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px', alignItems: 'start' }} className="awards-grid-layout">
+                {/* Left Column: Editor */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
-                    {heismanCandidates.map(c => {
-                      const userPreds = predictions[currentUser.id] || {};
-                      const isWinner = userPreds.heismanWinner === c.id;
-                      
-                      return (
-                        <div 
-                          key={c.id} 
-                          onClick={() => toggleHeismanWinner(c.id)}
-                          style={{
-                            background: isWinner ? 'rgba(255, 179, 0, 0.1)' : 'rgba(255,255,255,0.02)',
-                            border: `2px solid ${isWinner ? '#ffb300' : 'var(--border-light)'}`,
-                            boxShadow: isWinner ? '0 0 12px rgba(255, 179, 0, 0.2)' : 'none',
-                            borderRadius: '12px',
-                            padding: '12px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            textAlign: 'center',
-                            position: 'relative',
-                            transition: 'all 0.2s ease'
-                          }}
-                          className="candidate-card"
-                        >
-                          {isWinner && (
-                            <span style={{ position: 'absolute', top: '6px', right: '6px', fontSize: '1.2rem' }}>🏆</span>
-                          )}
-                          <img 
-                            src={c.logoUrl} 
-                            alt={c.school} 
-                            style={{ width: '32px', height: '32px', objectFit: 'contain', marginBottom: '8px', opacity: isWinner ? 1 : 0.8 }}
-                          />
-                          <div style={{ fontWeight: '700', fontSize: '0.9rem', color: isWinner ? '#ffb300' : 'white' }}>{c.name}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{c.position} &bull; {c.school}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Finalists section */}
-                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
-                    <h4 style={{ fontSize: '1.1rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa' }}>
-                      <span>🏅</span> Projected Finalists (Select 4)
+                  {/* Winner section */}
+                  <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                    <h4 style={{ fontSize: '1.1rem', margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#ffb300' }}>
+                      <span>🥇</span> Projected Heisman Winner
                     </h4>
-                    <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '8px', color: '#94a3b8' }}>
-                      Selected: {(predictions[currentUser.id]?.heismanFinalists || []).length} / 4
-                    </span>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                      {winnerCandidates.map(c => {
+                        const isWinner = userPreds.heismanWinner === c.id;
+                        const isCustom = !heismanCandidates.some(hc => hc.id === c.id);
+                        
+                        return (
+                          <div 
+                            key={c.id} 
+                            onClick={() => toggleHeismanWinner(c.id)}
+                            style={{
+                              background: isWinner ? 'rgba(255, 179, 0, 0.1)' : 'rgba(255,255,255,0.02)',
+                              border: `2px solid ${isWinner ? '#ffb300' : 'var(--border-light)'}`,
+                              boxShadow: isWinner ? '0 0 12px rgba(255, 179, 0, 0.2)' : 'none',
+                              borderRadius: '12px',
+                              padding: '12px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              textAlign: 'center',
+                              position: 'relative',
+                              transition: 'all 0.2s ease'
+                            }}
+                            className="candidate-card"
+                          >
+                            {isWinner && (
+                              <span style={{ position: 'absolute', top: '6px', right: '6px', fontSize: '1.2rem' }}>🏆</span>
+                            )}
+                            <img 
+                              src={c.logoUrl} 
+                              alt={c.school} 
+                              style={{ width: '32px', height: '32px', objectFit: 'contain', marginBottom: '8px', opacity: isWinner ? 1 : 0.8 }}
+                            />
+                            <div style={{ fontWeight: '700', fontSize: '0.9rem', color: isWinner ? '#ffb300' : 'white' }}>{c.name}</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                              {c.position} &bull; {c.school}
+                              {isCustom && <span style={{ display: 'block', color: '#ffb300', fontSize: '0.65rem', fontWeight: 'bold', marginTop: '2px' }}>✍️ WRITE-IN</span>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
-                    {heismanCandidates.map(c => {
-                      const userPreds = predictions[currentUser.id] || {};
-                      const finalists = userPreds.heismanFinalists || [];
-                      const isFinalist = finalists.includes(c.id);
-                      
-                      return (
-                        <div 
-                          key={c.id} 
-                          onClick={() => toggleHeismanFinalist(c.id)}
-                          style={{
-                            background: isFinalist ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255,255,255,0.02)',
-                            border: `2px solid ${isFinalist ? '#60a5fa' : 'var(--border-light)'}`,
-                            borderRadius: '12px',
-                            padding: '12px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            textAlign: 'center',
-                            position: 'relative',
-                            transition: 'all 0.2s ease'
-                          }}
-                          className="candidate-card"
-                        >
-                          {isFinalist && (
-                            <span style={{ position: 'absolute', top: '6px', right: '6px', fontSize: '1rem', color: '#60a5fa' }}>✅</span>
-                          )}
-                          <img 
-                            src={c.logoUrl} 
-                            alt={c.school} 
-                            style={{ width: '32px', height: '32px', objectFit: 'contain', marginBottom: '8px', opacity: isFinalist ? 1 : 0.8 }}
-                          />
-                          <div style={{ fontWeight: '700', fontSize: '0.9rem', color: isFinalist ? '#60a5fa' : 'white' }}>{c.name}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{c.position} &bull; {c.school}</div>
-                        </div>
-                      );
-                    })}
+                  {/* Finalists section */}
+                  <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
+                      <h4 style={{ fontSize: '1.1rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa' }}>
+                        <span>🏅</span> Projected Finalists (Select 4)
+                      </h4>
+                      <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '8px', color: '#94a3b8' }}>
+                        Selected: {userFinalistIds.length} / 4
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                      {finalistCandidates.map(c => {
+                        const isFinalist = userFinalistIds.includes(c.id);
+                        const isCustom = !heismanCandidates.some(hc => hc.id === c.id);
+                        
+                        return (
+                          <div 
+                            key={c.id} 
+                            onClick={() => toggleHeismanFinalist(c.id)}
+                            style={{
+                              background: isFinalist ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255,255,255,0.02)',
+                              border: `2px solid ${isFinalist ? '#60a5fa' : 'var(--border-light)'}`,
+                              borderRadius: '12px',
+                              padding: '12px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              textAlign: 'center',
+                              position: 'relative',
+                              transition: 'all 0.2s ease'
+                            }}
+                            className="candidate-card"
+                          >
+                            {isFinalist && (
+                              <span style={{ position: 'absolute', top: '6px', right: '6px', fontSize: '1rem', color: '#60a5fa' }}>✅</span>
+                            )}
+                            <img 
+                              src={c.logoUrl} 
+                              alt={c.school} 
+                              style={{ width: '32px', height: '32px', objectFit: 'contain', marginBottom: '8px', opacity: isFinalist ? 1 : 0.8 }}
+                            />
+                            <div style={{ fontWeight: '700', fontSize: '0.9rem', color: isFinalist ? '#60a5fa' : 'white' }}>{c.name}</div>
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                              {c.position} &bull; {c.school}
+                              {isCustom && <span style={{ display: 'block', color: '#60a5fa', fontSize: '0.65rem', fontWeight: 'bold', marginTop: '2px' }}>✍️ WRITE-IN</span>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
+
+                  {/* Search / Load Roster section */}
+                  <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                    <h4 style={{ fontSize: '1.1rem', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#a7f3d0' }}>
+                      <span>🔍</span> Search & Write-In Any Roster Player
+                    </h4>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginBottom: '16px' }}>
+                      Choose any team to dynamically fetch their active roster from ESPN, then search and select your write-in players!
+                    </p>
+
+                    <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                      <div style={{ flex: 1, minWidth: '200px' }}>
+                        <select 
+                          value={selectedRosterTeamId} 
+                          onChange={(e) => handleLoadRoster(e.target.value)}
+                          className="modern-select"
+                        >
+                          <option value="">-- Choose Team to Load Roster --</option>
+                          {teams.map(t => (
+                            <option key={t.id} value={t.id}>{t.ranking ? `#${t.ranking} ` : ''}{t.name} {t.nickname}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div style={{ flex: 1.5, minWidth: '200px' }}>
+                        <input 
+                          type="text" 
+                          placeholder="Type player name to filter roster..."
+                          value={rosterSearchQuery}
+                          onChange={(e) => setRosterSearchQuery(e.target.value)}
+                          style={{
+                            width: '100%',
+                            background: '#161c2d',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
+                            padding: '10px 12px',
+                            borderRadius: '10px',
+                            color: 'white',
+                            outline: 'none',
+                            fontSize: '0.9rem',
+                            height: '40px'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {rosterLoading ? (
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'center', padding: '16px' }}>
+                        🔄 Loading official roster from ESPN Scoreboard...
+                      </div>
+                    ) : (
+                      rosterPlayers.length > 0 && (
+                        <div style={{ maxHeight: '250px', overflowY: 'auto', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', background: 'rgba(0,0,0,0.15)', padding: '6px' }} className="custom-scrollbar">
+                          {(() => {
+                            const filtered = rosterPlayers.filter(p => p.name.toLowerCase().includes(rosterSearchQuery.toLowerCase()));
+                            if (filtered.length === 0) {
+                              return <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'center', padding: '16px' }}>No matching players found on this roster.</div>;
+                            }
+                            return filtered.map(p => {
+                              const isWinner = userPreds.heismanWinner === p.id;
+                              const isFinalist = (userPreds.heismanFinalists || []).includes(p.id);
+
+                              return (
+                                <div 
+                                  key={p.id} 
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '8px 12px',
+                                    borderBottom: '1px solid rgba(255,255,255,0.03)',
+                                    fontSize: '0.85rem'
+                                  }}
+                                >
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <img src={p.logoUrl} alt={p.school} style={{ width: '20px', height: '20px', objectFit: 'contain' }} />
+                                    <div>
+                                      <span style={{ fontWeight: 'bold', color: 'white' }}>{p.name}</span>
+                                      <span style={{ color: 'var(--text-secondary)', marginLeft: '6px', fontSize: '0.75rem' }}>{p.position} &bull; {p.school}</span>
+                                    </div>
+                                  </div>
+
+                                  <div style={{ display: 'flex', gap: '6px' }}>
+                                    <button
+                                      onClick={() => handleSelectCustomWinner(p)}
+                                      style={{
+                                        background: isWinner ? '#ffb300' : 'rgba(255,255,255,0.05)',
+                                        color: isWinner ? 'black' : 'white',
+                                        border: 'none',
+                                        padding: '4px 8px',
+                                        borderRadius: '6px',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        fontSize: '0.75rem'
+                                      }}
+                                    >
+                                      🏆 Winner
+                                    </button>
+                                    <button
+                                      onClick={() => handleSelectCustomFinalist(p)}
+                                      style={{
+                                        background: isFinalist ? '#60a5fa' : 'rgba(255,255,255,0.05)',
+                                        color: isFinalist ? 'black' : 'white',
+                                        border: 'none',
+                                        padding: '4px 8px',
+                                        borderRadius: '6px',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        fontSize: '0.75rem'
+                                      }}
+                                    >
+                                      {isFinalist ? '✅ Finalist' : '🏅 Finalist'}
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            });
+                          })()}
+                        </div>
+                      )
+                    )}
+                  </div>
+
                 </div>
+
+                {/* Right Column / Section: Buddy Comparison */}
+                {buddyId && (
+                  <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                    <h4 style={{ fontSize: '1.1rem', margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#a7f3d0' }}>
+                      <span>👥</span> Bud-to-Bud Heisman Comparison
+                    </h4>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '20px', marginBottom: '20px' }}>
+                      {/* Winner Comparison */}
+                      <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '0.75rem', color: '#ffb300', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.05em' }}>YOUR WINNER</div>
+                        {(() => {
+                          const winnerId = userPreds.heismanWinner;
+                          const p = winnerCandidates.find(c => c.id === winnerId);
+                          return p ? (
+                            <div>
+                              <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{p.name}</div>
+                              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.school}</div>
+                            </div>
+                          ) : <span style={{ color: '#475569', fontSize: '0.85rem' }}>No Pick</span>;
+                        })()}
+                      </div>
+                      <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '0.75rem', color: '#60a5fa', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.05em' }}>{buddyObj?.name?.toUpperCase()}'S WINNER</div>
+                        {(() => {
+                          const buddyPreds = predictions[buddyId] || {};
+                          const winnerId = buddyPreds.heismanWinner;
+                          const winnerDetails = buddyPreds.heismanWinnerDetails;
+                          
+                          const candidates = [...heismanCandidates];
+                          if (winnerDetails) candidates.push(winnerDetails);
+                          
+                          const p = candidates.find(c => c.id === winnerId);
+                          return p ? (
+                            <div>
+                              <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{p.name}</div>
+                              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.school}</div>
+                            </div>
+                          ) : <span style={{ color: '#475569', fontSize: '0.85rem' }}>No Pick</span>;
+                        })()}
+                      </div>
+                    </div>
+
+                    {/* Finalists Comparison List */}
+                    <div>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#94a3b8', marginBottom: '12px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Projected Finalists Comparison</div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div>
+                          <div style={{ fontSize: '0.75rem', color: '#a7f3d0', fontWeight: '600', marginBottom: '6px' }}>Your Finalists:</div>
+                          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            {(() => {
+                              const finalists = userPreds.heismanFinalists || [];
+                              if (finalists.length === 0) return <li style={{ color: '#475569', fontSize: '0.8rem' }}>None Selected</li>;
+                              return finalists.map(fid => {
+                                const p = finalistCandidates.find(c => c.id === fid);
+                                return p ? (
+                                  <li key={fid} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <img src={p.logoUrl} alt={p.school} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                    <span>{p.name} ({p.school})</span>
+                                  </li>
+                                ) : null;
+                              });
+                            })()}
+                          </ul>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '0.75rem', color: '#a7f3d0', fontWeight: '600', marginBottom: '6px' }}>{buddyObj?.name}'s Finalists:</div>
+                          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            {(() => {
+                              const buddyPreds = predictions[buddyId] || {};
+                              const finalists = buddyPreds.heismanFinalists || [];
+                              const finalistDetails = buddyPreds.heismanFinalistsDetails || [];
+                              
+                              const candidates = [...heismanCandidates];
+                              finalistDetails.forEach(f => {
+                                if (!candidates.some(c => c.id === f.id)) candidates.push(f);
+                              });
+                              
+                              if (finalists.length === 0) return <li style={{ color: '#475569', fontSize: '0.8rem' }}>None Selected</li>;
+                              return finalists.map(fid => {
+                                const p = candidates.find(c => c.id === fid);
+                                return p ? (
+                                  <li key={fid} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <img src={p.logoUrl} alt={p.school} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                    <span>{p.name} ({p.school})</span>
+                                  </li>
+                                ) : null;
+                              });
+                            })()}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
 
               </div>
-
-              {/* Right Column / Section: Buddy Comparison */}
-              {buddyId && (
-                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
-                  <h4 style={{ fontSize: '1.1rem', margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#a7f3d0' }}>
-                    <span>👥</span> Bud-to-Bud Heisman Comparison
-                  </h4>
-                  
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '20px', marginBottom: '20px' }}>
-                    {/* Winner Comparison */}
-                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
-                      <div style={{ fontSize: '0.75rem', color: '#ffb300', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.05em' }}>YOUR WINNER</div>
-                      {(() => {
-                        const winnerId = predictions[currentUser.id]?.heismanWinner;
-                        const p = heismanCandidates.find(c => c.id === winnerId);
-                        return p ? (
-                          <div>
-                            <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{p.name}</div>
-                            <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.school}</div>
-                          </div>
-                        ) : <span style={{ color: '#475569', fontSize: '0.85rem' }}>No Pick</span>;
-                      })()}
-                    </div>
-                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
-                      <div style={{ fontSize: '0.75rem', color: '#60a5fa', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.05em' }}>{buddyObj?.name?.toUpperCase()}'S WINNER</div>
-                      {(() => {
-                        const winnerId = predictions[buddyId]?.heismanWinner;
-                        const p = heismanCandidates.find(c => c.id === winnerId);
-                        return p ? (
-                          <div>
-                            <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{p.name}</div>
-                            <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.school}</div>
-                          </div>
-                        ) : <span style={{ color: '#475569', fontSize: '0.85rem' }}>No Pick</span>;
-                      })()}
-                    </div>
-                  </div>
-
-                  {/* Finalists Comparison List */}
-                  <div>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#94a3b8', marginBottom: '12px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Projected Finalists Comparison</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                      <div>
-                        <div style={{ fontSize: '0.75rem', color: '#a7f3d0', fontWeight: '600', marginBottom: '6px' }}>Your Finalists:</div>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          {(() => {
-                            const finalists = predictions[currentUser.id]?.heismanFinalists || [];
-                            if (finalists.length === 0) return <li style={{ color: '#475569', fontSize: '0.8rem' }}>None Selected</li>;
-                            return finalists.map(fid => {
-                              const p = heismanCandidates.find(c => c.id === fid);
-                              return p ? (
-                                <li key={fid} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                  <img src={p.logoUrl} alt={p.school} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                                  <span>{p.name} ({p.school})</span>
-                                </li>
-                              ) : null;
-                            });
-                          })()}
-                        </ul>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.75rem', color: '#a7f3d0', fontWeight: '600', marginBottom: '6px' }}>{buddyObj?.name}'s Finalists:</div>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          {(() => {
-                            const finalists = predictions[buddyId]?.heismanFinalists || [];
-                            if (finalists.length === 0) return <li style={{ color: '#475569', fontSize: '0.8rem' }}>None Selected</li>;
-                            return finalists.map(fid => {
-                              const p = heismanCandidates.find(c => c.id === fid);
-                              return p ? (
-                                <li key={fid} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                  <img src={p.logoUrl} alt={p.school} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-                                  <span>{p.name} ({p.school})</span>
-                                </li>
-                              ) : null;
-                            });
-                          })()}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              )}
-
             </div>
-          </div>
-        )}
+          );
+        })()}
       </main>
 
       {/* Bottom Nav Bar */}
