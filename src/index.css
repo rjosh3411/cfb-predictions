@@ -773,3 +773,15 @@ html {
   border-color: #818cf8;
   box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
+
+/* Awards layout media queries & hover effects */
+.candidate-card:hover {
+  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+@media (min-width: 992px) {
+  .awards-grid-layout {
+    grid-template-columns: 2fr 1.2fr !important;
+  }
+}

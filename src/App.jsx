@@ -8,6 +8,7 @@ export default function App() {
   const [teams, setTeams] = useState([]);
   const [games, setGames] = useState([]);
   const [predictions, setPredictions] = useState({});
+  const [heismanCandidates, setHeismanCandidates] = useState([]);
   const [currentUser, setCurrentUser] = useState(null); // Global User Profile
   const [activePartyCode, setActivePartyCode] = useState(''); // Active party code
   const [showPartyOnboarding, setShowPartyOnboarding] = useState(false);
@@ -91,14 +92,17 @@ export default function App() {
         const savedUsername = localStorage.getItem('gridiron_username');
         const savedActiveParty = localStorage.getItem('gridiron_active_party') || '';
         
-        const [teamsRes, gamesRes] = await Promise.all([
+        const [teamsRes, gamesRes, heismanRes] = await Promise.all([
           fetch(`${API_BASE}/teams`),
-          fetch(`${API_BASE}/games`)
+          fetch(`${API_BASE}/games`),
+          fetch(`${API_BASE}/heisman`)
         ]);
         const teamsData = await teamsRes.json();
         const gamesData = await gamesRes.json();
+        const heismanData = await heismanRes.json();
         setTeams(teamsData);
         setGames(gamesData);
+        setHeismanCandidates(heismanData);
         
         if (savedUsername) {
           const loginRes = await fetch(`${API_BASE}/users/login`, {
@@ -497,6 +501,84 @@ export default function App() {
       });
     } catch (err) {
       console.error("Failed to Sync prediction to server:", err);
+      // Fallback rollback
+      const rolledBackPreds = { ...userPreds };
+      localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
+      setPredictions(prev => ({
+        ...prev,
+        [currentUser.id]: userPreds
+      }));
+    }
+  };
+
+  const toggleHeismanWinner = async (candidateId) => {
+    if (!currentUser) return;
+    
+    const userPreds = predictions[currentUser.id] || {};
+    const newPreds = { ...userPreds, heismanWinner: candidateId };
+    
+    // Save to localStorage immediately as a backup
+    localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(newPreds));
+    
+    // Optimistic UI state update
+    setPredictions(prev => ({
+      ...prev,
+      [currentUser.id]: newPreds
+    }));
+    
+    try {
+      await fetch(`${API_BASE}/predictions/${currentUser.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ predictions: { heismanWinner: candidateId } })
+      });
+    } catch (err) {
+      console.error("Failed to Sync Heisman Winner to server:", err);
+      // Fallback rollback
+      const rolledBackPreds = { ...userPreds };
+      localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
+      setPredictions(prev => ({
+        ...prev,
+        [currentUser.id]: userPreds
+      }));
+    }
+  };
+
+  const toggleHeismanFinalist = async (candidateId) => {
+    if (!currentUser) return;
+    
+    const userPreds = predictions[currentUser.id] || {};
+    let finalists = userPreds.heismanFinalists || [];
+    
+    if (finalists.includes(candidateId)) {
+      finalists = finalists.filter(id => id !== candidateId);
+    } else {
+      if (finalists.length >= 4) {
+        alert("You can select up to 4 Heisman finalists.");
+        return;
+      }
+      finalists = [...finalists, candidateId];
+    }
+    
+    const newPreds = { ...userPreds, heismanFinalists: finalists };
+    
+    // Save to localStorage immediately as a backup
+    localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(newPreds));
+    
+    // Optimistic UI state update
+    setPredictions(prev => ({
+      ...prev,
+      [currentUser.id]: newPreds
+    }));
+    
+    try {
+      await fetch(`${API_BASE}/predictions/${currentUser.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ predictions: { heismanFinalists: finalists } })
+      });
+    } catch (err) {
+      console.error("Failed to Sync Heisman Finalists to server:", err);
       // Fallback rollback
       const rolledBackPreds = { ...userPreds };
       localStorage.setItem(`gridiron_predictions_${currentUser.id}`, JSON.stringify(rolledBackPreds));
@@ -1642,6 +1724,208 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {activeTab === 'awards' && (
+          <div>
+            <h3 className="section-title">
+              <span>🏆</span> 2026 Heisman Trophy Predictions
+            </h3>
+            
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '20px' }}>
+              Cast your predictions for college football's highest individual honor. Select your projected Heisman Trophy winner and up to 4 finalists.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px', alignItems: 'start' }} className="awards-grid-layout">
+              {/* Left Column: Editor */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                
+                {/* Winner section */}
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                  <h4 style={{ fontSize: '1.1rem', margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#ffb300' }}>
+                    <span>🥇</span> Projected Heisman Winner
+                  </h4>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                    {heismanCandidates.map(c => {
+                      const userPreds = predictions[currentUser.id] || {};
+                      const isWinner = userPreds.heismanWinner === c.id;
+                      
+                      return (
+                        <div 
+                          key={c.id} 
+                          onClick={() => toggleHeismanWinner(c.id)}
+                          style={{
+                            background: isWinner ? 'rgba(255, 179, 0, 0.1)' : 'rgba(255,255,255,0.02)',
+                            border: `2px solid ${isWinner ? '#ffb300' : 'var(--border-light)'}`,
+                            boxShadow: isWinner ? '0 0 12px rgba(255, 179, 0, 0.2)' : 'none',
+                            borderRadius: '12px',
+                            padding: '12px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            textAlign: 'center',
+                            position: 'relative',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="candidate-card"
+                        >
+                          {isWinner && (
+                            <span style={{ position: 'absolute', top: '6px', right: '6px', fontSize: '1.2rem' }}>🏆</span>
+                          )}
+                          <img 
+                            src={c.logoUrl} 
+                            alt={c.school} 
+                            style={{ width: '32px', height: '32px', objectFit: 'contain', marginBottom: '8px', opacity: isWinner ? 1 : 0.8 }}
+                          />
+                          <div style={{ fontWeight: '700', fontSize: '0.9rem', color: isWinner ? '#ffb300' : 'white' }}>{c.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{c.position} &bull; {c.school}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Finalists section */}
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
+                    <h4 style={{ fontSize: '1.1rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa' }}>
+                      <span>🏅</span> Projected Finalists (Select 4)
+                    </h4>
+                    <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '8px', color: '#94a3b8' }}>
+                      Selected: {(predictions[currentUser.id]?.heismanFinalists || []).length} / 4
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                    {heismanCandidates.map(c => {
+                      const userPreds = predictions[currentUser.id] || {};
+                      const finalists = userPreds.heismanFinalists || [];
+                      const isFinalist = finalists.includes(c.id);
+                      
+                      return (
+                        <div 
+                          key={c.id} 
+                          onClick={() => toggleHeismanFinalist(c.id)}
+                          style={{
+                            background: isFinalist ? 'rgba(96, 165, 250, 0.1)' : 'rgba(255,255,255,0.02)',
+                            border: `2px solid ${isFinalist ? '#60a5fa' : 'var(--border-light)'}`,
+                            borderRadius: '12px',
+                            padding: '12px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            textAlign: 'center',
+                            position: 'relative',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="candidate-card"
+                        >
+                          {isFinalist && (
+                            <span style={{ position: 'absolute', top: '6px', right: '6px', fontSize: '1rem', color: '#60a5fa' }}>✅</span>
+                          )}
+                          <img 
+                            src={c.logoUrl} 
+                            alt={c.school} 
+                            style={{ width: '32px', height: '32px', objectFit: 'contain', marginBottom: '8px', opacity: isFinalist ? 1 : 0.8 }}
+                          />
+                          <div style={{ fontWeight: '700', fontSize: '0.9rem', color: isFinalist ? '#60a5fa' : 'white' }}>{c.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{c.position} &bull; {c.school}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column / Section: Buddy Comparison */}
+              {buddyId && (
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-light)', borderRadius: '16px', padding: '20px' }}>
+                  <h4 style={{ fontSize: '1.1rem', margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#a7f3d0' }}>
+                    <span>👥</span> Bud-to-Bud Heisman Comparison
+                  </h4>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '20px', marginBottom: '20px' }}>
+                    {/* Winner Comparison */}
+                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#ffb300', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.05em' }}>YOUR WINNER</div>
+                      {(() => {
+                        const winnerId = predictions[currentUser.id]?.heismanWinner;
+                        const p = heismanCandidates.find(c => c.id === winnerId);
+                        return p ? (
+                          <div>
+                            <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{p.name}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.school}</div>
+                          </div>
+                        ) : <span style={{ color: '#475569', fontSize: '0.85rem' }}>No Pick</span>;
+                      })()}
+                    </div>
+                    <div style={{ background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: '12px', textAlign: 'center' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#60a5fa', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.05em' }}>{buddyObj?.name?.toUpperCase()}'S WINNER</div>
+                      {(() => {
+                        const winnerId = predictions[buddyId]?.heismanWinner;
+                        const p = heismanCandidates.find(c => c.id === winnerId);
+                        return p ? (
+                          <div>
+                            <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{p.name}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.school}</div>
+                          </div>
+                        ) : <span style={{ color: '#475569', fontSize: '0.85rem' }}>No Pick</span>;
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* Finalists Comparison List */}
+                  <div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#94a3b8', marginBottom: '12px', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Projected Finalists Comparison</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#a7f3d0', fontWeight: '600', marginBottom: '6px' }}>Your Finalists:</div>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          {(() => {
+                            const finalists = predictions[currentUser.id]?.heismanFinalists || [];
+                            if (finalists.length === 0) return <li style={{ color: '#475569', fontSize: '0.8rem' }}>None Selected</li>;
+                            return finalists.map(fid => {
+                              const p = heismanCandidates.find(c => c.id === fid);
+                              return p ? (
+                                <li key={fid} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <img src={p.logoUrl} alt={p.school} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                  <span>{p.name} ({p.school})</span>
+                                </li>
+                              ) : null;
+                            });
+                          })()}
+                        </ul>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#a7f3d0', fontWeight: '600', marginBottom: '6px' }}>{buddyObj?.name}'s Finalists:</div>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          {(() => {
+                            const finalists = predictions[buddyId]?.heismanFinalists || [];
+                            if (finalists.length === 0) return <li style={{ color: '#475569', fontSize: '0.8rem' }}>None Selected</li>;
+                            return finalists.map(fid => {
+                              const p = heismanCandidates.find(c => c.id === fid);
+                              return p ? (
+                                <li key={fid} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <img src={p.logoUrl} alt={p.school} style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
+                                  <span>{p.name} ({p.school})</span>
+                                </li>
+                              ) : null;
+                            });
+                          })()}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Bottom Nav Bar */}
@@ -1674,6 +1958,16 @@ export default function App() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
           </svg>
           Standings
+        </button>
+
+        <button 
+          className={`nav-item ${activeTab === 'awards' ? 'active' : ''}`}
+          onClick={() => setActiveTab('awards')}
+        >
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4c0 2.62 2.07 4.79 4.78 4.97L10 16H8a2 2 0 00-2 2v2h12v-2a2 2 0 00-2-2h-2l.22-4.03C16.93 11.79 19 9.62 19 7V3H5zm2 2h10v2c0 2.21-1.79 4-4 4H9c-2.21 0-4-1.79-4-4V5z" />
+          </svg>
+          Awards
         </button>
 
         <button 

@@ -114,6 +114,11 @@ app.get('/api/games', async (req, res) => {
   res.json(db.games);
 });
 
+app.get('/api/heisman', async (req, res) => {
+  const db = await readDB();
+  res.json(db.heismanCandidates || []);
+});
+
 // Endpoint: Register a new user profile
 app.post('/api/users/register', async (req, res) => {
   const { username, displayName } = req.body;
