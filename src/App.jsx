@@ -13,6 +13,7 @@ export default function App() {
   const [rosterSearchQuery, setRosterSearchQuery] = useState('');
   const [rosterPlayers, setRosterPlayers] = useState([]);
   const [rosterLoading, setRosterLoading] = useState(false);
+  const [dbStatus, setDbStatus] = useState(null);
   const [currentUser, setCurrentUser] = useState(null); // Global User Profile
   const [activePartyCode, setActivePartyCode] = useState(''); // Active party code
   const [showPartyOnboarding, setShowPartyOnboarding] = useState(false);
@@ -96,17 +97,20 @@ export default function App() {
         const savedUsername = localStorage.getItem('gridiron_username');
         const savedActiveParty = localStorage.getItem('gridiron_active_party') || '';
         
-        const [teamsRes, gamesRes, heismanRes] = await Promise.all([
+        const [teamsRes, gamesRes, heismanRes, debugRes] = await Promise.all([
           fetch(`${API_BASE}/teams`),
           fetch(`${API_BASE}/games`),
-          fetch(`${API_BASE}/heisman`)
+          fetch(`${API_BASE}/heisman`),
+          fetch(`${API_BASE}/debug`).catch(() => null)
         ]);
         const teamsData = await teamsRes.json();
         const gamesData = await gamesRes.json();
         const heismanData = await heismanRes.json();
+        const debugData = debugRes ? await debugRes.json().catch(() => null) : null;
         setTeams(teamsData);
         setGames(gamesData);
         setHeismanCandidates(heismanData);
+        if (debugData) setDbStatus(debugData);
         
         if (savedUsername) {
           const loginRes = await fetch(`${API_BASE}/users/login`, {
@@ -1115,6 +1119,48 @@ export default function App() {
 
       {/* Main dashboard content */}
       <main className="main-content">
+        {dbStatus && !dbStatus.upstashUrlConfigured && (
+          <div style={{
+            background: 'rgba(245, 158, 11, 0.08)',
+            border: '1px solid rgba(245, 158, 11, 0.15)',
+            borderRadius: '12px',
+            padding: '12px 16px',
+            marginBottom: '20px',
+            fontSize: '0.82rem',
+            color: '#fbbf24',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '6px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
+              <span>⚠️</span> Warning: Cloud Backup Not Active
+            </div>
+            <div>
+              Predictions are currently saved to local container storage only. **Picks will be wiped** when Render redeploys or sleeps. To secure your predictions forever (100% free), click below:
+            </div>
+            <button 
+              onClick={() => alert("How to set up Upstash Redis (Free Cloud Storage):\n\n1. Go to https://upstash.com and sign up for a free account (takes 10 seconds with GitHub/Google).\n2. Create a new Redis Database (choose the Free tier).\n3. Copy the 'UPSTASH_REDIS_REST_URL' and 'UPSTASH_REDIS_REST_TOKEN' credentials from your Upstash console.\n4. Go to your Render Dashboard, select your Web Service, and click on 'Environment' settings.\n5. Add these two environment variables:\n   - UPSTASH_REDIS_REST_URL\n   - UPSTASH_REDIS_REST_TOKEN\n6. Save changes.\n\nOnce Render finishes rebuilding, this warning will disappear and your picks will be saved forever!")}
+              style={{
+                background: '#fbbf24',
+                color: '#1e1b4b',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                fontSize: '0.72rem',
+                alignSelf: 'flex-start',
+                marginTop: '4px',
+                transition: 'opacity 0.2s ease'
+              }}
+              onMouseOver={(e) => e.target.style.opacity = '0.9'}
+              onMouseOut={(e) => e.target.style.opacity = '1'}
+            >
+              ⚙️ View Setup Guide
+            </button>
+          </div>
+        )}
+
         {activeTab === 'predictions' && (
           <div>
             {/* Accuracy Scoreboard Dashboard */}
